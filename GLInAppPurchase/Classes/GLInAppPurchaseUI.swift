@@ -295,18 +295,18 @@ class ContainerView:UIView{
         var index = 0
         var width = imageScrollView.frame.size.width
         for image in fullVersionFeatures_ImageSet {
-            let height = image.1.characters.count != 0 ? imageScrollView.frame.size.height - 45 : imageScrollView.frame.size.height
+            let height = image.1.count != 0 ? imageScrollView.frame.size.height - 45 : imageScrollView.frame.size.height
             
             let imageView = UIImageView(frame: CGRect(x: x,y: 0,width: width,height: height))
             imageView.contentMode = UIViewContentMode.scaleAspectFit
             imageView.image = image.0
             
-            if image.1.characters.count != 0 {
+            if image.1.count != 0 {
                 let tempContainer = image.1.components(separatedBy: "##")
                 
                 let attributeDescription = NSMutableAttributedString(string: String("\(tempContainer[0])\n\(tempContainer[1])"))
-                attributeDescription.addAttributes([NSFontAttributeName:UIFont.imageDescriptionBig(),NSForegroundColorAttributeName:UIColor.black], range: NSRange(location: 0, length: tempContainer[0].characters.count))
-                attributeDescription.addAttributes([NSFontAttributeName:UIFont.imageDescriptionSmall(),NSForegroundColorAttributeName:UIColor.lightGray], range: NSRange(location: tempContainer[0].characters.count, length: tempContainer[1].characters.count + 1))
+                attributeDescription.addAttributes([NSAttributedStringKey.font:UIFont.imageDescriptionBig(),NSAttributedStringKey.foregroundColor:UIColor.black], range: NSRange(location: 0, length: tempContainer[0].count))
+                attributeDescription.addAttributes([NSAttributedStringKey.font:UIFont.imageDescriptionSmall(),NSAttributedStringKey.foregroundColor:UIColor.lightGray], range: NSRange(location: tempContainer[0].count, length: tempContainer[1].count + 1))
                 
                 let description = UILabel(frame: CGRect(x: x,y: imageView.frame.size.height,width: width,height: 45))
                 description.attributedText = attributeDescription
@@ -347,8 +347,8 @@ class ContainerView:UIView{
             
             
             let attributeOffers = NSMutableAttributedString(string: String("\(offer.actionTitle!)\n\(offer.actionSubTitle!)"))
-            attributeOffers.addAttributes([NSFontAttributeName:UIFont.priceListBoldFont(),NSForegroundColorAttributeName:UIColor.darkGray], range: NSRange(location: 0, length: offer.actionTitle.characters.count))
-            attributeOffers.addAttributes([NSFontAttributeName:UIFont.priceListThinFont(),NSForegroundColorAttributeName:UIColor.gray], range: NSRange(location: offer.actionTitle!.characters.count, length: offer.actionSubTitle!.characters.count + 1))
+            attributeOffers.addAttributes([NSAttributedStringKey.font:UIFont.priceListBoldFont(),NSAttributedStringKey.foregroundColor:UIColor.darkGray], range: NSRange(location: 0, length: offer.actionTitle.count))
+            attributeOffers.addAttributes([NSAttributedStringKey.font:UIFont.priceListThinFont(),NSAttributedStringKey.foregroundColor:UIColor.gray], range: NSRange(location: offer.actionTitle!.count, length: offer.actionSubTitle!.count + 1))
             
             let label = UILabel(frame: CGRect(x: 2,y: 2,width: width - 4,height: height-20))
             label.attributedText = attributeOffers
@@ -414,7 +414,7 @@ class ContainerView:UIView{
         case .transparentStyle:
             viewContainer.layer.cornerRadius = 12.0
             viewContainer.clipsToBounds = true
-            mainView.backgroundColor = UIColor(colorLiteralRed: 0, green: 0, blue: 0, alpha: 0.5)
+            mainView.backgroundColor = UIColor(white: 0, alpha: 0.5)
             break
         
         default:
@@ -430,7 +430,7 @@ class ContainerView:UIView{
     ///Sets up user UI
     func setUpOtherUI() {
         let attributeString = NSMutableAttributedString(string: String("\(bannerTitle!)\n\(bannerSubTitle!)"))
-        attributeString.addAttributes([NSFontAttributeName:UIFont.titleFont()], range: NSRange(location: 0, length: bannerTitle.characters.count))
+        attributeString.addAttributes([NSAttributedStringKey.font:UIFont.titleFont()], range: NSRange(location: 0, length: bannerTitle.count))
         headerLabel.attributedText = attributeString
         headerLabel.textColor = bannerTitleColor
         titlContainer.applyGradient(bannerTheme, locations: [0,0.1], startPoint:nil, endPoint:nil)
@@ -456,7 +456,7 @@ class ContainerView:UIView{
     }
     
     
-    func tapGesture(_ sender:UITapGestureRecognizer) {
+    @objc func tapGesture(_ sender:UITapGestureRecognizer) {
         
         let action:GLInAppAction = actionArray[(sender.view?.tag)!]
         guard let didselectHandler = action.didSelectAction else{
@@ -489,7 +489,7 @@ class ContainerView:UIView{
         }
     }
     
-    func orientationChange(_ sender:Notification){
+    @objc func orientationChange(_ sender:Notification){
         self.layoutIfNeeded()
     }
     
